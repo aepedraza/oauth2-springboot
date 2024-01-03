@@ -13,8 +13,11 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        // Builds final security filter chain
+
+        // Configure HTTP Security
+        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {})); // Indicates that the app is an OAuth2.0 auth server and expects JWT
+
         return http.build();
-        // TODO 2024-01-3 Configure web security
     }
 }
