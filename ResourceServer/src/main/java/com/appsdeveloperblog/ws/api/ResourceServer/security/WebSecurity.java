@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.oauth2.core.authorization.OAuth2AuthorizationManagers.hasScope;
+
 @Configuration
 @EnableWebSecurity // May not be necessary, check Spring Documentation
 public class WebSecurity {
@@ -20,7 +22,7 @@ public class WebSecurity {
                         // "SCOPE" is a must when Spring Security creates a list of authorities based on scopes
                         // appends "SCOPE_" when need to check scope information in JWT
                         // Not needed when JWT acquired initially in HTTP requests
-                        auth.requestMatchers(HttpMethod.GET, "/users").hasAuthority("SCOPE_profile")
+                        auth.requestMatchers(HttpMethod.GET, "/users/**").access(hasScope("profile"))
                                 .anyRequest().authenticated())
                 // Indicates that the app is an OAuth2.0 auth server and expects JWT
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
