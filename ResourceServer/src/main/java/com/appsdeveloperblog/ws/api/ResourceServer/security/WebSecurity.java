@@ -22,7 +22,9 @@ public class WebSecurity {
                         // "SCOPE" is a must when Spring Security creates a list of authorities based on scopes
                         // appends "SCOPE_" when need to check scope information in JWT
                         // Not needed when JWT acquired initially in HTTP requests
-                        auth.requestMatchers(HttpMethod.GET, "/users/**").access(hasScope("profile"))
+                        auth.requestMatchers(HttpMethod.GET, "/users/**")
+                                //.access(hasScope("profile"))
+                                .hasRole("developer") // .hasAnyRole(String...) also available
                                 .anyRequest().authenticated())
                 // Indicates that the app is an OAuth2.0 auth server and expects JWT
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
