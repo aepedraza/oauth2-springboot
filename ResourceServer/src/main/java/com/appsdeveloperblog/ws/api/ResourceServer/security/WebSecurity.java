@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-@EnableMethodSecurity // Already includes @Configuration
+@EnableMethodSecurity(securedEnabled = true) // Already includes @Configuration
 @EnableWebSecurity // May not be necessary, check Spring Documentation
 public class WebSecurity {
 
