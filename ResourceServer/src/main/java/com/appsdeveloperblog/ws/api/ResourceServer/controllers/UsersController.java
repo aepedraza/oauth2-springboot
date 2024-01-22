@@ -1,6 +1,8 @@
 package com.appsdeveloperblog.ws.api.ResourceServer.controllers;
 
+import com.appsdeveloperblog.ws.api.ResourceServer.response.User;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,5 +28,12 @@ public class UsersController {
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable String id, @AuthenticationPrincipal Jwt jwt) {
         return "Deleted user with id " + id + " and JWT subject " + jwt.getSubject();
+    }
+
+    @PostAuthorize("returnObject.id == #jwt.subject")
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable String id, @AuthenticationPrincipal Jwt jwt) {
+        String hardcodedJwtSubject = "5557c002-50be-40e6-b4ff-27be46a9320a";
+        return new User(hardcodedJwtSubject, "Alvaro", "Pedraza");
     }
 }
