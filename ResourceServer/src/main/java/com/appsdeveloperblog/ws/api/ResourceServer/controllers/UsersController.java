@@ -1,6 +1,8 @@
 package com.appsdeveloperblog.ws.api.ResourceServer.controllers;
 
 import com.appsdeveloperblog.ws.api.ResourceServer.response.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UsersController {
 
+    @Autowired
+    private Environment environment;
+
     @GetMapping("/status/check")
     public String statusCheck() {
-        return "Working...";
+        return "Working on port [" + environment.getProperty("local.server.port") + "]";
     }
 
     // Allows more complex expressions, is evaluated before the method is executed
