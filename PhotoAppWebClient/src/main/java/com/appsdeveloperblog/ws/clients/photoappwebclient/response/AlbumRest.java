@@ -5,6 +5,7 @@
  */
 package com.appsdeveloperblog.ws.clients.photoappwebclient.response;
 
+// Copied from albums resource server
 public class AlbumRest {
     private String userId;
     private String albumId;
