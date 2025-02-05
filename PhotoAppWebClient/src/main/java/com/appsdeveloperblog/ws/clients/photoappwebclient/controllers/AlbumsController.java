@@ -25,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.appsdeveloperblog.ws.clients.photoappwebclient.response.AlbumRest;
 
+// Not a REST controller, just a regular MVC controller
 @Controller
 public class AlbumsController {
 	
@@ -37,7 +38,8 @@ public class AlbumsController {
 	@Autowired
 	WebClient webClient;
 	
-	
+
+	// to trigger this method when GET /albums is requested from browser
 	@GetMapping("/albums")
 	public String getAlbums(Model model, 
 			@AuthenticationPrincipal OidcUser principal) {
