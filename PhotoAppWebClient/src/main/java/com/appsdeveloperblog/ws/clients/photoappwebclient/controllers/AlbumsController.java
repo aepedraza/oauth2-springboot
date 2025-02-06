@@ -41,10 +41,16 @@ public class AlbumsController {
 
 	// to trigger this method when GET /albums is requested from browser
 	@GetMapping("/albums")
-	public String getAlbums(Model model, 
-			@AuthenticationPrincipal OidcUser principal) {
+	public String getAlbums(
+			Model model, // Model for thymeleaf template (view)
+			@AuthenticationPrincipal OidcUser principal // Currently authenticated user
+	) {
 
-		
+		System.out.println("Principal: " + principal);
+		OidcIdToken idToken = principal.getIdToken();
+		String tokenValue = idToken.getTokenValue();
+		System.out.println("idTokenValue: " + tokenValue);
+
 		String url = "http://localhost:8082/albums";
 
 		List<AlbumRest> albums = webClient.get()
