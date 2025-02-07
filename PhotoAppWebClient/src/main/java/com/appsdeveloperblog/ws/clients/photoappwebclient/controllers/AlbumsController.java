@@ -46,6 +46,13 @@ public class AlbumsController {
 			@AuthenticationPrincipal OidcUser principal // Currently authenticated user
 	) {
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
+
+		OAuth2AuthorizedClient oAuth2Client = oauth2ClientService.loadAuthorizedClient(oauth2Token.getAuthorizedClientRegistrationId(), oauth2Token.getName());
+		String jwtAccessToken = oAuth2Client.getAccessToken().getTokenValue();
+		System.out.println("jwtAccessToken: " + jwtAccessToken);
+
 		System.out.println("Principal: " + principal);
 		OidcIdToken idToken = principal.getIdToken();
 		String tokenValue = idToken.getTokenValue();
