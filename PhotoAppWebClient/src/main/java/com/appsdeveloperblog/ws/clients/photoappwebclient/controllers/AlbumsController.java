@@ -32,8 +32,8 @@ public class AlbumsController {
 	@Autowired
 	OAuth2AuthorizedClientService oauth2ClientService;
 	
-//	@Autowired
-//	RestTemplate restTemplate;
+	@Autowired
+	RestTemplate restTemplate;
 
 	@Autowired
 	WebClient webClient;
@@ -58,13 +58,21 @@ public class AlbumsController {
 		String tokenValue = idToken.getTokenValue();
 		System.out.println("idTokenValue: " + tokenValue);
 
-		String url = "http://localhost:8082/albums";
+		String albumsApiGatewayUrl = "http://localhost:8082/albums";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setBearerAuth(jwtAccessToken);
+		HttpEntity<Object> entity = new HttpEntity<>(headers);
 
-		List<AlbumRest> albums = webClient.get()
-				.uri(url)
-				.retrieve()
-				.bodyToMono(new ParameterizedTypeReference<List<AlbumRest>>(){})
-				.block();
+		ResponseEntity<List<AlbumRest>> responseEntity = restTemplate.exchange(albumsApiGatewayUrl, HttpMethod.GET, entity,
+				new ParameterizedTypeReference<List<AlbumRest>>() {});
+
+		List<AlbumRest> albums = responseEntity.getBody();
+
+//		List<AlbumRest> albums = webClient.get()
+//				.uri(albumsApiGatewayUrl)
+//				.retrieve()
+//				.bodyToMono(new ParameterizedTypeReference<List<AlbumRest>>(){})
+//				.block();
 	
         model.addAttribute("albums", albums);
 		
