@@ -63,16 +63,21 @@ public class AlbumsController {
 		headers.setBearerAuth(jwtAccessToken);
 		HttpEntity<Object> entity = new HttpEntity<>(headers);
 
-		ResponseEntity<List<AlbumRest>> responseEntity = restTemplate.exchange(albumsApiGatewayUrl, HttpMethod.GET, entity,
-				new ParameterizedTypeReference<List<AlbumRest>>() {});
+		// Need to write code to include authorization HTTP header. Need to do it for every communication
+		// OAuth2 support for RestTemplate has been deprecated and is no longer available in Spring Security 5
+		// Need to use WebClient instead
+//		ResponseEntity<List<AlbumRest>> responseEntity = restTemplate.exchange(albumsApiGatewayUrl, HttpMethod.GET, entity,
+//                new ParameterizedTypeReference<>() {});
+//
+//		List<AlbumRest> albums = responseEntity.getBody();
 
-		List<AlbumRest> albums = responseEntity.getBody();
-
-//		List<AlbumRest> albums = webClient.get()
-//				.uri(albumsApiGatewayUrl)
-//				.retrieve()
-//				.bodyToMono(new ParameterizedTypeReference<List<AlbumRest>>(){})
-//				.block();
+		// WebClient part of spring-webflux reactor (support async non-blocking calls)
+		// include spring-weblux and reactor-netty dependencies
+		List<AlbumRest> albums = webClient.get()
+				.uri(albumsApiGatewayUrl)
+				.retrieve()
+				.bodyToMono(new ParameterizedTypeReference<List<AlbumRest>>(){})
+				.block();
 	
         model.addAttribute("albums", albums);
 		
