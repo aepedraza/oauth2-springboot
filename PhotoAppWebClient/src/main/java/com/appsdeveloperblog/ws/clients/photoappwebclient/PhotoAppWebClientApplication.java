@@ -22,17 +22,21 @@ public class PhotoAppWebClientApplication {
 	}
 	
 	@Bean
-	public WebClient webClient(ClientRegistrationRepository clientRegistrationrepository,
-			OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository
-			) {
-		
+	public WebClient webClient(
+			ClientRegistrationRepository clientRegistrationrepository, // registered OAuth clients
+			OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository // stores info about client already authorized
+	) {
+
+		// Filter for OAuth2 (built in with Spring framework)
 		ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 = 
 				new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrationrepository, 
 						oAuth2AuthorizedClientRepository);
 		
 		oauth2.setDefaultOAuth2AuthorizedClient(true);
 		
-		return WebClient.builder().apply(oauth2.oauth2Configuration()).build();
+		return WebClient.builder()
+				.apply(oauth2.oauth2Configuration()) // Send OAuth2 token in every request (DO NOT SEND TO 3RD PARTY SERVERS, user different WebClient config)
+				.build();
 	}
 
 }
