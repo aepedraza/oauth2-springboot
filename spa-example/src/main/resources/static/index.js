@@ -59,5 +59,11 @@ function getAuthCode() {
 }
 
 function postAuthorize(state, authCode) {
-	alert("State = " + state + "\nAuth Code = " + authCode);
+	var originalStateValue = document.getElementById("stateValue").innerHTML;
+
+    if(state === originalStateValue) {
+        alert("Auth ok. Proceed with request token")
+    } else {
+        alert("Invalid state value received");
+    }
 }
