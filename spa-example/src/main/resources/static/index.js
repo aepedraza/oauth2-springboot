@@ -62,8 +62,35 @@ function postAuthorize(state, authCode) {
 	var originalStateValue = document.getElementById("stateValue").innerHTML;
 
     if(state === originalStateValue) {
-        alert("Auth ok. Proceed with request token")
+        requestTokens(authCode);
     } else {
         alert("Invalid state value received");
     }
+}
+
+function requestTokens(authCode) {
+    var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+    var data = {
+        "grant_type": "authorization_code",
+        "client_id": "photo-app-PKCE-client",
+        "code": authCode,
+        "code_verifier": codeVerifier,
+        "redirect_uri":"http://localhost:8181/authcodeReader.html"
+    };
+
+    // Sending POST request to Auth server to get a JWT
+    $.ajax({
+        beforeSend: function (request) {
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        },
+        type: "POST",
+        url: "http://localhost:8080/auth/protocol/openid-connect/token",
+        data: data,
+        success: postRequestAccessToken,
+        dataType: "json"
+    });
+}
+
+function postRequestAccessToken(data, status, jqXHR) { // jqXHR: response object
+    document.getElementById("accessToken").innerHTML = data["access_token"];
 }
