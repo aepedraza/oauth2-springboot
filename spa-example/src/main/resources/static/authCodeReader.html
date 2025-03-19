@@ -6,5 +6,20 @@
 </head>
 <body>
 
+<script type="text/javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    var authCode = urlParams.get('code'),
+            state = urlParams.get('state'),
+            error = urlParams.get('error'),
+            errorDescription = urlParams.get('error_description');
+
+    if (error) {
+        window.alert("The following error took place:" +  error + ". Description of error:" + errorDescription);
+    } else {
+        window.opener.postAuthorize(state, authCode); // window.opener is index.html
+    }
+    window.close();
+</script>
+
 </body>
 </html>

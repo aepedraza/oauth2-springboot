@@ -57,3 +57,7 @@ function getAuthCode() {
     // Open Auth server in a new window
     window.open(authorizationURL, 'authorizationRequestWindow', 'width=800,height=600,left=200,top=200');
 }
+
+function postAuthorize(state, authCode) {
+	alert("State = " + state + "\nAuth Code = " + authCode);
+}
