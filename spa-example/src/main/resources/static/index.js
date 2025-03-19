@@ -25,3 +25,17 @@ function base64urlencode(sourceValue) {
     var base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     return base64urlEncoded;
 }
+
+async function generateCodeChallenge() {
+    var codeChallengeValue = "";
+
+    var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+
+    var textEncoder = new TextEncoder('US-ASCII');
+    var encodedValue = textEncoder.encode(codeVerifier);
+    var digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
+
+    codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
+
+    document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
+}
