@@ -5,8 +5,16 @@
     <title>JavaScript Application with PKCE</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="index.js"></script>
 </head>
 <body>
 <h1>Index page</h1>
+
+<div id="stateValue"></div>
+<div><input type="button" value="Generate state value" onclick="generateState(30)"/></div>
+
+<div id="codeVerifierValue"></div>
+<div><input type="button" value="Generate Code Verifier value" onclick="generateCodeVerifier()"/></div>
+
 </body>
 </html>
