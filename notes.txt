@@ -1,7 +1,7 @@
 137. Creating a new public client in Keycloak
 - Sign to server
 - Create new OAuth client
-    - clientId: photo-app-pkce-client
+    - clientId: photo-app-PKCE-client
     - access type: public (because of js client)
     - standard flow enabled: ON
     - Direct Access Grant Enabled: OFF

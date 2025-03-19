@@ -39,3 +39,21 @@ async function generateCodeChallenge() {
 
     document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
 }
+
+function getAuthCode() {
+    var state = document.getElementById("stateValue").innerHTML;
+    var codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
+
+    // Build URL to redirect to Auth server
+    var authorizationURL = "http://localhost:8080/auth/appsdeveloperblog/protocol/openid-connect/auth";
+    authorizationURL += "?client_id=photo-app-PKCE-client";
+    authorizationURL += "&response_type=code";
+    authorizationURL += "&scope=openid"; // More scopes may be added
+    authorizationURL += "&redirect_uri=http://localhost:8181/authCodeReader.html";
+    authorizationURL += "&state=" + state;
+    authorizationURL += "&code_challenge=" + codeChallenge;
+    authorizationURL += "&code_challenge_method=S256";
+
+    // Open Auth server in a new window
+    window.open(authorizationURL, 'authorizationRequestWindow', 'width=800,height=600,left=200,top=200');
+}
