@@ -94,3 +94,23 @@ function requestTokens(authCode) {
 function postRequestAccessToken(data, status, jqXHR) { // jqXHR: response object
     document.getElementById("accessToken").innerHTML = data["access_token"];
 }
+
+function getInfoFromResourceServer(){
+
+    var accessToken = document.getElementById("accessToken").innerHTML;
+
+    $.ajax({ // Need to configure CORS in API GW and Resource Server
+        beforeSend: function (request) {
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("Authorization", "Bearer " + accessToken);
+        },
+        type: "GET",
+        url: "http://localhost:8082/users/status/check", // send to API Gateway. Get info from ResourceServer
+        success: postInfoFromAccessToken,
+        dataType: "text"
+    });
+}
+
+function postInfoFromAccessToken(data, status, jqXHR) {
+    alert(data);
+}
