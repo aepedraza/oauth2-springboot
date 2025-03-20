@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        # support CORS preflight requests and your route predicate
+        # does not evaluate to true because the HTTP method is options
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:8181"
+            allowedMethods:
+              - GET
+            allowedHeaders: "*"
