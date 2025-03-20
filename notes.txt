@@ -12,3 +12,8 @@
 151. Configure CORS Access on API Gateway
 - Check Spring Cloud documentation. CORS configuration section
 - put in separate application.yml file
+
+152. Configure CORS in Resource Server
+- Test calling directly from JS SPA
+- CORS config cannot be on both API GW and ResourceServer
+    - Error: Access-Control-Allow-Origin cannot contain more than one origin
