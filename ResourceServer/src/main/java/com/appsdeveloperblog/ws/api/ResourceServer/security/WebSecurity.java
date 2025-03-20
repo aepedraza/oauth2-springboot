@@ -25,8 +25,7 @@ public class WebSecurity {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
 
         // Configure HTTP Security
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // May be unnecessary. Enabled by default if CorsConfigurationSource bean is present (according to docs)
-                .authorizeHttpRequests(auth ->
+        http.authorizeHttpRequests(auth ->
                         // Indicates that GET /users must have a profile scope of access (checks JWT.scope)
                         // "SCOPE" is a must when Spring Security creates a list of authorities based on scopes
                         // appends "SCOPE_" when need to check scope information in JWT
@@ -39,18 +38,5 @@ public class WebSecurity {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
         return http.build();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
-        corsConfiguration.setAllowedHeaders(List.of("*"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-
-        return source;
     }
 }
