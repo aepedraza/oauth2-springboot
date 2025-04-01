@@ -45,7 +45,7 @@ function getAuthCode() {
     var codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
 
     // Build URL to redirect to Auth server
-    var authorizationURL = "http://localhost:8080/auth/appsdeveloperblog/protocol/openid-connect/auth";
+    var authorizationURL = "http://localhost:8080/realms/appsdeveloperblog/protocol/openid-connect/auth";
     authorizationURL += "?client_id=photo-app-PKCE-client";
     authorizationURL += "&response_type=code";
     authorizationURL += "&scope=openid"; // More scopes may be added
@@ -75,7 +75,7 @@ function requestTokens(authCode) {
         "client_id": "photo-app-PKCE-client",
         "code": authCode,
         "code_verifier": codeVerifier,
-        "redirect_uri":"http://localhost:8181/authcodeReader.html"
+        "redirect_uri":"http://localhost:8181/authCodeReader.html"
     };
 
     // Sending POST request to Auth server to get a JWT
@@ -84,7 +84,7 @@ function requestTokens(authCode) {
             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         },
         type: "POST",
-        url: "http://localhost:8080/auth/protocol/openid-connect/token",
+        url: "http://localhost:8080/realms/appsdeveloperblog/protocol/openid-connect/token",
         data: data,
         success: postRequestAccessToken,
         dataType: "json"

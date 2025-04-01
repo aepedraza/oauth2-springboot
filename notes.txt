@@ -2,7 +2,7 @@
 - Sign to server
 - Create new OAuth client
     - clientId: photo-app-PKCE-client
-    - access type: public (because of js client)
+    - access type: public (because of js client) --> Client Authentication = OFF in current Keycloak version
     - standard flow enabled: ON
     - Direct Access Grant Enabled: OFF
     - Redirect URI: http://localhost:8181/authCodeReader.html --> to be created
