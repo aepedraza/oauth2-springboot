@@ -6,7 +6,7 @@ function generateState(length) {
         stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
     }
 
-    document.getElementById("stateValue").innerHTML = stateValue;
+    $('#stateValue').html(stateValue);
 }
 
 function generateCodeVerifier() {
@@ -14,12 +14,12 @@ function generateCodeVerifier() {
     var randomByteArray = new Uint8Array(32);
     window.crypto.getRandomValues(randomByteArray);
 
-    returnValue = base64urlencode(randomByteArray);
+    returnValue = base64UrlEncode(randomByteArray);
 
-    document.getElementById("codeVerifierValue").innerHTML = returnValue;
+    $('#codeVerifierValue').html(returnValue);
 }
 
-function base64urlencode(sourceValue) {
+function base64UrlEncode(sourceValue) {
     var stringValue = String.fromCharCode.apply(null, sourceValue);
     var base64Encoded = btoa(stringValue);
     var base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
@@ -29,20 +29,21 @@ function base64urlencode(sourceValue) {
 async function generateCodeChallenge() {
     var codeChallengeValue = "";
 
-    var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+    var codeVerifier = $('#codeVerifierValue').html();
 
+    // Challenge creation according to RFC
     var textEncoder = new TextEncoder('US-ASCII');
     var encodedValue = textEncoder.encode(codeVerifier);
     var digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
 
-    codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
+    codeChallengeValue = base64UrlEncode(Array.from(new Uint8Array(digest)));
 
-    document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
+    $('#codeChallengeValue').html(codeChallengeValue);
 }
 
 function getAuthCode() {
-    var state = document.getElementById("stateValue").innerHTML;
-    var codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
+    var state = $('#stateValue').html();
+    var codeChallenge = $('#codeChallengeValue').html();
 
     // Build URL to redirect to Auth server
     var authorizationURL = "http://localhost:8080/realms/appsdeveloperblog/protocol/openid-connect/auth";
@@ -59,7 +60,7 @@ function getAuthCode() {
 }
 
 function postAuthorize(state, authCode) {
-	var originalStateValue = document.getElementById("stateValue").innerHTML;
+	var originalStateValue = $('#stateValue').html();
 
     if(state === originalStateValue) {
         requestTokens(authCode);
@@ -69,7 +70,7 @@ function postAuthorize(state, authCode) {
 }
 
 function requestTokens(authCode) {
-    var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+    var codeVerifier = $('#codeVerifierValue').html();
     var data = {
         "grant_type": "authorization_code",
         "client_id": "photo-app-PKCE-client",
@@ -92,12 +93,12 @@ function requestTokens(authCode) {
 }
 
 function postRequestAccessToken(data, status, jqXHR) { // jqXHR: response object
-    document.getElementById("accessToken").innerHTML = data["access_token"];
+    $('#accessToken').html(data["access_token"]);
 }
 
 function getInfoFromResourceServer(){
 
-    var accessToken = document.getElementById("accessToken").innerHTML;
+    var accessToken = $('#accessToken').html();
 
     $.ajax({ // Need to configure CORS in API GW and Resource Server
         beforeSend: function (request) {
