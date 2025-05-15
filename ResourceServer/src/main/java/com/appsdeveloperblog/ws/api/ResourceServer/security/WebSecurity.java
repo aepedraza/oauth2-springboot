@@ -37,6 +37,36 @@ public class WebSecurity {
                 // Indicates that the app is an OAuth2.0 auth server and expects JWT
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
+        // CORS configuration example (if direct communication with ResourceServer is needed)
+        // If you use Spring MVC’s CORS support, you can omit specifying the CorsConfigurationSource and
+        // Spring Security uses the CORS configuration provided to Spring MVC
+//        http.cors(Customizer.withDefaults())
+//                .authorizeHttpRequests(auth ->
+//                        auth.requestMatchers(HttpMethod.GET, "users/**")
+//                                .hasRole("developer")
+//                                .anyRequest().authenticated())
+//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
+
         return http.build();
     }
+
+    /**
+     * Integrates {@link org.springframework.web.filter.CorsFilter} with Spring security
+     * to ensure CORS is handled first and pre-flight request not rejected
+     *
+     * @return CORS configuration source
+     * @see <a href="https://docs.spring.io/spring-security/reference/6.2/servlet/integrations/cors.html#page-title">Spring Security documentation - CORS configuration</a>
+     */
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(List.of("*"));
+//        corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
+//        corsConfiguration.setAllowedHeaders(List.of("*"));
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//
+//        return source;
+//    }
 }
